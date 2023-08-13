@@ -1,0 +1,10 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "5.1.1",
+    "prisma": "^5.1.1"
+  }
+}
