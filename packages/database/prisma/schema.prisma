@@ -17,3 +17,9 @@ model Products {
   description String
   imagesUrl   String
 }
+
+model Users {
+  id       Int    @id @unique @default(autoincrement())
+  email    String @unique
+  password String
+}

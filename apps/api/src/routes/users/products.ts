@@ -56,6 +56,16 @@ userProductRouter.post('/getnextitems', async (req, res) => {
         take: 10
     })
 
+    nextItems.map((item) => {
+        console.log(item.imagesUrl)
+        const imageUrlString = item.imagesUrl.slice(1, item.imagesUrl.length - 1)
+        const arrayOfUrlString = imageUrlString.split(', ')
+
+        arrayOfUrlString.map((url) => {
+            console.log(url.slice(1, url.length - 1))
+        })
+    })
+
     res.send({
         data: nextItems
     })

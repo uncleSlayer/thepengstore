@@ -10,10 +10,12 @@ adminProductRouter.post('/upload-item', async (req, res) => {
     const productInfoValidatd = productUploadValidator.safeParse(productInfo)
 
     if (!productInfoValidatd.success) {
+        console.log(productInfoValidatd.error.message)
         return res.send({
             error: "informations supplied are not valid"
         })
     }
+
 
     await prisma.products.create({
         data: {

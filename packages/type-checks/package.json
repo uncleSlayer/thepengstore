@@ -1,0 +1,10 @@
+{
+  "name": "type-checks",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "zod": "^3.21.4",
+    "zod-checks": "*"
+  }
+}
