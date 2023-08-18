@@ -8,8 +8,8 @@ export const userProductRouter = Router()
 
 
 // get individual item from database
-userProductRouter.post('/getinditem', async (req, res) => {
-    const productId = req.body.id
+userProductRouter.get('/getinditem/:id', async (req, res) => {
+    const productId = Number(req.params.id)
     const productIdValidated = productGetIndValidator.safeParse(productId)
 
     if (!productIdValidated) {

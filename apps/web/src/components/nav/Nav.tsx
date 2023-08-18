@@ -16,7 +16,7 @@ const Nav = () => {
                     <Link sx={{ marginRight: '2%', textDecoration: 'none', color: 'black', cursor: 'pointer' }}>Mens Wear</Link>
                     <Link sx={{ marginRight: '1%', textDecoration: 'none', color: 'black', cursor: 'pointer' }}>Womens Wear</Link>
                 </Box>
-                <ButtonGroup variant='contained' sx={{ marginRight: '2%' }} color='success' >
+                <ButtonGroup variant='contained' sx={{ marginRight: '2%' }} >
                     <Button>Signup</Button>
                     <Button>Login</Button>
                 </ButtonGroup>
