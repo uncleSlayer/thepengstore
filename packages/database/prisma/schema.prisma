@@ -16,10 +16,22 @@ model Products {
   price       Int
   description String
   imagesUrl   String
+  Cart        Cart[]
 }
 
 model Users {
   id       Int    @id @unique @default(autoincrement())
   email    String @unique
   password String
+  Cart     Cart[]
+}
+
+model Cart {
+  id Int @id @unique @default(autoincrement())
+
+  owner   Users @relation(fields: [ownerId], references: [id])
+  ownerId Int
+
+  product    Products @relation(fields: [productsId], references: [id])
+  productsId Int
 }

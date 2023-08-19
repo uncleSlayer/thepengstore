@@ -27,6 +27,7 @@
     "configs": "*",
     "react": "^18.2.0",
     "react-hot-toast": "^2.4.1",
+    "react-infinite-scroll-component": "^6.1.0",
     "recoil": "^0.7.7",
     "store": "*",
     "type-checks": "*"

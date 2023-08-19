@@ -28,6 +28,19 @@ const Login = () => {
             }
         })
 
+        const resultTwo = await fetch(SERVER_IP + '/cart/add/2', {
+            method: 'post',
+            credentials: 'include',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify({
+                productId: 9
+            })
+        })
+
+        console.log(resultTwo.json())
+
         toast('Logged in successfully', {
             icon: '✔️',
             style: {
