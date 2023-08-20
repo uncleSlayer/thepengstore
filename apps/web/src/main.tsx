@@ -7,7 +7,7 @@ import Signup from 'ui/components/authentication/Signup.tsx';
 import Login from 'ui/components/authentication/Login.tsx';
 import AllProducts from 'ui/components/products/AllProducts.tsx';
 import IndProduct from 'ui/components/products/IndProduct.tsx'
-
+import CartItems from 'ui/components/user/cart/CartItems.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -18,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path='/login' element={<Login />} />
         <Route path='/home/products' element={<AllProducts />} />
         <Route path='/getinditem/:id' element={<IndProduct />} />
+        <Route path='/cart/all' element={<CartItems />} />
       </Routes>
     </RecoilRoot>
   </BrowserRouter>
