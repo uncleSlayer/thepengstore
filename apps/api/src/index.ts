@@ -5,6 +5,7 @@ import { PORT } from "../apiconfig";
 import { authRouter } from "./routes/users/auth";
 import cors from "cors"
 import { cartRouter } from "./routes/users/cart"
+import { checkoutRouter } from "./routes/users/checkout"
 import cookieParser from "cookie-parser"
 
 const corsOptions = {
@@ -24,6 +25,7 @@ app.use(adminProductRouter)
 app.use(userProductRouter)
 app.use(authRouter)
 app.use(cartRouter)
+app.use(checkoutRouter)
 
 app.listen(PORT, () => console.log(`express server is listening on port: ${PORT}`))
 
