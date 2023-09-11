@@ -35,3 +35,31 @@ model Cart {
   product    Products @relation(fields: [productsId], references: [id])
   productsId Int
 }
+
+model Address {
+  id Int @id @unique @default(autoincrement())
+
+  houseNumber String
+  city        String
+  district    String
+  state       String
+  pin         Int
+  Order       Order[]
+}
+
+model Order {
+  id Int @id @unique @default(autoincrement())
+
+  cartId    Int
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int
+
+  orderTime DateTime
+
+  status OrderStatus @default(ORDER_RECEIVED)
+}
+
+enum OrderStatus {
+  DELIVERED
+  ORDER_RECEIVED
+}

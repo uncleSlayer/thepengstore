@@ -30,7 +30,7 @@ adminProductRouter.post('/upload-item', async (req, res) => {
                 message: "product created"
             })
         })
-        .catch((err) => {
+        .catch((err: Error) => {
             res.send({
                 error: err
             })
