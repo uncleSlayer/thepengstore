@@ -11,12 +11,22 @@ datasource db {
 }
 
 model Products {
-  id          Int    @id @unique @default(autoincrement())
+  id          Int             @id @unique @default(autoincrement())
   name        String
   price       Int
   description String
-  imagesUrl   String
   Cart        Cart[]
+  category    ProductCategory
+  imagesUrl   imagesUrl[]
+}
+
+model imagesUrl {
+  id Int @id @unique @default(autoincrement())
+
+  url String
+
+  product    Products @relation(fields: [productsId], references: [id])
+  productsId Int
 }
 
 model Users {
@@ -62,4 +72,9 @@ model Order {
 enum OrderStatus {
   DELIVERED
   ORDER_RECEIVED
+}
+
+enum ProductCategory {
+  SAMBALPURIPATA
+  SAMBALPURISAREE
 }
