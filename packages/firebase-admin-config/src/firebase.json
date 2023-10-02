@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "thepengstore-b36b7",
+  "private_key_id": "5c3a2b9fd348e5ae94274c337a6575f17a5d5315",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCwDXSNyLq+SO6V\nNHF7c2RIfispd9dsr9bxcdczwjtNjXYPOjmu5AJsPCIbxel6+fDszPD0QE4dnAtG\nDg//87QA+D+M/i56zjLtxzvYFxCGu9CrNSBD+XwAyiIOJZ/NrHrDZPA+ZdZVlOAO\nHWAQ5HvXbxcvp/oHQgmOQC16snj8xZxSrb8QGkwIbC6FKAaCuyUnOlTQfDQnRBkB\nUjjnK2N4OtMrUB2SLKfxZdD8zj+5QnEfkxAOAwLFEt/t6aQNDtRcicYwVWb5b/XH\nEFxB1lABUlrHxFXPXwUgaOb2rQYygvqbsN38Q7Zy8lxesxKY8TqStdm4SNvYCJxy\nuS1JRoBPAgMBAAECggEANhnUbPO361zHMIO+seSqdxqKkgI5abV5lJXav5WbGsBz\nfMd0TXnVAsTR6H3/u2JOdr6d9zlBqBi5YCxXH10ZPkkLYn0D9IokHWzhx4yC8ByM\nSeiYAzuKL0XuhDFss8wip6P/rfUmkgMffUbqrBZCtlf1pJf2nj9dZ2DyeOeahXaD\nvpcEQqROhoOl+hnMGi3/MAG1NHwWefBxuAfZwS0q4JVtg2spKnbw4oA5+CknxyYo\nhtRBBqqzUP26PTkvC7vYW4Nw0BUOZsKVNwt0NWAlgsW8PvVR7iLt/KuwBcitBDZ5\n6XP0HVLMNcHdHJMnMui3T5UIqSntYWoSUJ8vYqWSWQKBgQDj3ruqPfldh4wk7sAc\nJiTXg7KzshrLx8wl+Db6DBOJG8BFT88pMsoy97lgi302mi/gs44JG8gdaAAd6LLN\n9V4Onlv1EED9oT5EP05RN4gl0obXl/rGiyvfxclkXwCHNblkvIVNs+Thnij8/vkV\nvQ4AcQJznwPcLHzOCd16XWWhBwKBgQDFySi8Uozpj5yamgZxPfH3Z6+nmViky8Ho\nhGsRsS2z/ScLtt+w7LU47XtklZsXuQu3hA2fMOAA9RtPSDd2S2oSIIq4TL4gjIvE\nLr0DN/W/A7gvQ5JbD73rnimdyetRaZCXsl1KHNKPsyuohaj+3DTbQ1zEmUCk/uuf\nFtT5elJ8eQKBgDOmffU1vPtFSS/p6iO3RayQDoaKvWYpcI2+uH9vE1KFtsw/Ld7R\nw2FQI3XNyGEDDA0rxessn+yCcVxWLYlfr6UyofdnasPSs7F2hAMGylaAZM4jhdVR\nIG3FgEO/APik5dP+o1ychSna1sGZ7c3On4jcFMkuZwqWDugI9mnRF8MrAoGAGxIf\nWzdJRiZ73sU6IIHD/oLYje31Lgkdbz/Aj9laUgpSL85F66daXoJSoz++zI5tRh7y\n5lkAL+FcbYuK28wSpoyBsBwA4d+aua1T/X7JSe2uZfmvrHsJGZi6RXh/ltMGEV0+\nW4h6YWS6kwRITynAqkocBmSbbnndshaj68mMRLECgYABk0TnVVS6AUsWUVp0aPPk\ncH/G8jtKDJwMXOmUx0o9VwcPbbzuH9Jx5R4uj4wcoXiBbqv9PVyp4deiQ2D4cWLs\nRszMdIWbhl2bo1yr74uZ4iBCHHEchOCJRVRA9dbgNDJs9xnu8ctntLAYi8/Axwsn\nV5/h+FvuzdM4Nwxgu0+3IQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-no7jd@thepengstore-b36b7.iam.gserviceaccount.com",
+  "client_id": "109090790303505058278",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-no7jd%40thepengstore-b36b7.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

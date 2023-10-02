@@ -2,6 +2,7 @@ import { Router } from "express";
 import { productGetIndValidator } from "zod-checks";
 import { productLastItemIdValidator } from "zod-checks";
 import { prisma } from "database";
+import { allProductsLastItemType } from "type-checks";
 
 
 export const userProductRouter = Router()
@@ -12,6 +13,13 @@ userProductRouter.get('/getinditem/:id', async (req, res) => {
     const productId = Number(req.params.id)
     const productIdValidated = productGetIndValidator.safeParse(productId)
 
+    try {
+        console.log(req.cookies)
+    } catch (error) {
+        console.log(error);
+
+    }
+
     if (!productIdValidated) {
         return res.send({
             error: "id is not sent"
@@ -21,6 +29,10 @@ userProductRouter.get('/getinditem/:id', async (req, res) => {
     const productInfo = await prisma.products.findFirst({
         where: {
             id: productId
+        },
+
+        include: {
+            imagesUrl: true
         }
     })
 
@@ -30,6 +42,9 @@ userProductRouter.get('/getinditem/:id', async (req, res) => {
         })
     }
 
+    console.log(productInfo);
+
+
     res.send({
         data: productInfo
     })
@@ -38,8 +53,8 @@ userProductRouter.get('/getinditem/:id', async (req, res) => {
 
 // get 10 last items
 userProductRouter.post('/getnextitems', async (req, res) => {
-    const lastItemId: number = req.body.id
-    const lastItemIdValidated = productLastItemIdValidator.safeParse(lastItemId)
+    const lastItemInfo: allProductsLastItemType = req.body
+    const lastItemIdValidated = productLastItemIdValidator.safeParse(lastItemInfo)
 
     if (!lastItemIdValidated.success) {
         return res.send({
@@ -50,20 +65,16 @@ userProductRouter.post('/getnextitems', async (req, res) => {
     const nextItems = await prisma.products.findMany({
         where: {
             id: {
-                gt: lastItemId
-            }
+                gt: lastItemInfo.id
+            },
+            category: lastItemInfo.category
         },
+
+        include: {
+            imagesUrl: true
+        },
+
         take: 10
-    })
-
-    nextItems.map((item) => {
-        console.log(item.imagesUrl)
-        const imageUrlString = item.imagesUrl.slice(1, item.imagesUrl.length - 1)
-        const arrayOfUrlString = imageUrlString.split(', ')
-
-        arrayOfUrlString.map((url) => {
-            console.log(url.slice(1, url.length - 1))
-        })
     })
 
     res.send({

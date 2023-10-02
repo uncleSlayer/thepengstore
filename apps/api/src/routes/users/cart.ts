@@ -139,7 +139,7 @@ cartRouter.get('/cart/getall', async (req, res) => {
             })
         }
 
-        products.push(productInfo)
+        // products.push(productInfo)
     }))
 
     return res.send({

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import menu from './assets/menu.png'
-import { Account, ID, client } from 'appwriteconfig'
+// import { Account, ID, client } from 'appwriteconfig'
+import logo from "../src/assets/logo.png"
 
 const App = () => {
 
@@ -17,7 +18,7 @@ const App = () => {
     <nav className='fixed top-2 right-2 left-2 bg-slate-200 shadow-sm lg:flex lg:flex-row lg:items-center pb-3 rounded-lg'>
       <div className='flex items-center w-full justify-between p-5'>
         <div className="logo">
-          <h3>KoshalFabrics</h3>
+          <img src={logo} alt="" />
         </div>
         <div onClick={toggleBottomBarState} className='lg:hidden'>
           <img src={menu} className='w-5' alt="" />

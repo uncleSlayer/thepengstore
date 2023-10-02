@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "deve": "turbo run dev --concurrency 11",
+    "dev": "turbo run dev --concurrency 15",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -20,8 +20,10 @@
     "packages/*"
   ],
   "dependencies": {
+    "@types/multer-s3": "^3.0.0",
     "@types/uuid": "^9.0.3",
     "appwrite": "^13.0.0",
+    "multer-s3": "^3.0.1",
     "react-router-dom": "^6.15.0"
   }
 }
