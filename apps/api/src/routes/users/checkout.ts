@@ -87,22 +87,27 @@ checkoutRouter.post('/create-order-next-step', (req, res) => {
 
         const currentTime = new Date().toISOString();
 
-        const order = await prisma.order.create({
-            data: {
-                cartId: cartItem.id,
-                orderTime: currentTime,
-                status: "ORDER_RECEIVED",
-                address: {
-                    create: {
-                        houseNumber: reqBody.address.houseNo,
-                        city: reqBody.address.city,
-                        state: reqBody.address.state,
-                        district: reqBody.address.district,
-                        pin: reqBody.address.pin
+        try {
+            const order = await prisma.order.create({
+                data: {
+                    cartId: cartItem.id,
+                    orderTime: currentTime,
+                    status: "ORDER_RECEIVED",
+                    address: {
+                        create: {
+                            houseNumber: reqBody.address.houseNo,
+                            city: reqBody.address.city,
+                            state: reqBody.address.state,
+                            district: reqBody.address.district,
+                            pin: reqBody.address.pin
+                        }
                     }
                 }
-            }
-        })
+            })
+        } catch (error) {
+            console.log(error);
+
+        }
 
     })
 

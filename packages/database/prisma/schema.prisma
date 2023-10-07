@@ -44,6 +44,8 @@ model Cart {
 
   product    Products @relation(fields: [productsId], references: [id])
   productsId Int
+
+  quantity Int @default(1)
 }
 
 model Address {

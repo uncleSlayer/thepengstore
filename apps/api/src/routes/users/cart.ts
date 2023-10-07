@@ -1,15 +1,14 @@
 import { Router } from "express";
 import { prisma } from "database";
-import jwt from "jsonwebtoken";
-import { JWT_SIGN_TOKEN } from "../../../apiconfig";
-import { addToCartValidator } from "zod-checks";
 import { addToCartType } from "type-checks";
+import { auth } from 'firebase-admin-config'
 
 export const cartRouter = Router()
 
 cartRouter.post('/cart/add/:id', async (req, res) => {
 
     const userToken: string = req.cookies.token
+    const productId: addToCartType = parseInt(req.params.id)
 
     if (!userToken) {
         return res.send({
@@ -17,82 +16,79 @@ cartRouter.post('/cart/add/:id', async (req, res) => {
         })
     }
 
-    const productId: addToCartType = req.body.productId
-    const userEmail = jwt.verify(userToken, JWT_SIGN_TOKEN)
+    await auth.verifyIdToken(userToken)
+        .then(async (result) => {
+            const user = await prisma.users.findFirst({
+                where: {
+                    email: result.email
+                }
+            })
 
-    const productIdValidaed = addToCartValidator.safeParse(productId)
-    console.log(productId)
+            if (!user) {
+                return {
+                    success: false,
+                    error: 'user not found'
+                }
+            }
 
-    if (!productIdValidaed.success) {
-        return res.send({
-            error: 'product id type is not correct'
+            const existingCart = await prisma.cart.findFirst({
+                where: {
+                    productsId: productId,
+                    ownerId: user.id
+                }
+            })
+
+            if (existingCart) {
+                await prisma.cart.update({
+                    where: {
+                        id: existingCart.id
+                    },
+
+                    data: {
+                        quantity: existingCart.quantity + 1
+                    }
+                })
+
+                return res.send({
+                    success: true,
+                    message: `cart with id: ${existingCart.id} has been quantity increamented`
+                })
+            }
+
+            const cart = await prisma.cart.create({
+                data: {
+                    ownerId: user?.id,
+                    productsId: productId
+                }
+            })
+
+            return res.send({
+                message: `cart with id: ${cart.id} created`
+            })
+
         })
-    }
+        .catch((err) => {
+            console.log(err);
 
-    // I don't know what kind of error this is, but to avoid typescript errors I have written this check here.
-    if (typeof userEmail !== 'string') {
-        return res.send({
-            error: 'some error occured'
+            res.send({
+                success: false,
+                error: err
+            })
         })
-    }
-
-    const product = await prisma.products.findFirst({
-        where: {
-            id: productId
-        }
-    })
-
-    const user = await prisma.users.findFirst({
-        where: {
-            email: userEmail
-        }
-    })
-
-    if (!product || !user) {
-        return res.send({
-            error: "no user or product found with the given details"
-        })
-    }
-
-    const checkCart = await prisma.cart.findFirst({
-        where: {
-            ownerId: user.id,
-            productsId: product.id
-        }
-    })
-
-    if (checkCart) {
-        return res.send({
-            error: "this item is alreay in your cart"
-        })
-    }
-
-    const newCart = await prisma.cart.create({
-        data: {
-            ownerId: user?.id,
-            productsId: product?.id
-        }
-    })
-
-    res.send({
-        message: `cart with cart id: ${newCart.id} created`
-    })
 })
 
 cartRouter.get('/cart/getall', async (req, res) => {
 
     const userToken: string = req.cookies.token
-    const userEmail = jwt.verify(userToken, JWT_SIGN_TOKEN)
+
+    const userTokenDecrypted = await auth.verifyIdToken(userToken)
+    console.log(userToken);
+
+    const userEmail = userTokenDecrypted.email
 
     if (!userToken) {
         return res.send({
             error: 'jwt token not found'
-        })
-    }
-
-    if (typeof userEmail !== 'string') {
-        return res.send({
-            error: 'something went wrong'
         })
     }
 
@@ -105,17 +101,14 @@ cartRouter.get('/cart/getall', async (req, res) => {
         }
     })
 
+    console.log(user);
+
+
     if (!user?.Cart) {
         return res.send({
             error: 'user does not have any cart items'
         })
     }
-
-    const productIds: number[] = []
-
-    user.Cart.map((cart) => {
-        productIds.push(cart.productsId)
-    })
 
     const products: {
         id: number;
@@ -125,24 +118,105 @@ cartRouter.get('/cart/getall', async (req, res) => {
         imagesUrl: string;
     }[] = []
 
-    await Promise.all(productIds.map(async (productId) => {
-        const productInfo = await prisma.products.findFirst({
+    for (let i = 0; i < user.Cart.length; i++) {
+
+        const product = await prisma.products.findFirst({
             where: {
-                id: productId
+                id: user.Cart[i].productsId
+            },
+            include: {
+                imagesUrl: true,
             }
         })
 
-        if (!productInfo) {
-            console.log(`something went wrong while fetching produc data of product id: ${productId}`)
+        if (!product) {
             return res.send({
-                error: "some error occured"
+                error: 'some weird error that I am not in a mood to fix now'
             })
         }
 
-        // products.push(productInfo)
-    }))
+        console.log(product);
+
+
+        if (!product.id || !product?.name || !product?.price || !product?.description || !product?.imagesUrl) {
+            return res.send({
+                error: 'will solve this when I see the bug bye'
+            })
+        }
+
+        const pushItem = {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            description: product.description,
+            imagesUrl: product.imagesUrl[0].url,
+            quantity: user.Cart[i].quantity
+        }
+
+        products.push(pushItem)
+    }
 
     return res.send({
         message: products
     })
+})
+
+cartRouter.post('/cart/remove-one/:id', async (req, res) => {
+    const productId: number = parseInt(req.params.id)
+    const userInfo = await auth.verifyIdToken(req.cookies.token)
+
+    if (!userInfo) {
+        return res.send({
+            success: false,
+            message: 'invalid token'
+        })
+    }
+
+    const user = await prisma.users.findFirst({
+        where: {
+            email: userInfo.email
+        }
+    })
+
+    if (!user) {
+        return res.send({
+            success: false,
+            error: 'no user found with this email'
+        })
+    }
+
+    const cartToUpdate = await prisma.cart.findFirst({
+        where: {
+            productsId: productId,
+            ownerId: user.id
+        }
+    })
+
+    if (!cartToUpdate) {
+        return res.send({
+            success: false,
+            error: 'cart with this product id from the user is not available in db'
+        })
+    }
+
+    try {
+        await prisma.cart.update({
+            where: {
+                id: cartToUpdate.id
+            },
+
+            data: {
+                quantity: cartToUpdate.quantity - 1
+            }
+        })
+        return res.send({
+            success: true,
+            message: 'cart item removed'
+        })
+    } catch (error) {
+        return res.send({
+            success: false,
+            error: error
+        })
+    }
 })
