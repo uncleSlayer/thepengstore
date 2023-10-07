@@ -82,8 +82,6 @@ authRouter.post('/login', async (req, res) => {
         return resp.exp
     })
 
-    const expTime = Math.floor((tokenExp - Date.now()) / 1000);
-
     const loggingUser = await prisma.users.findFirst({
         where: {
             email: userEmail
@@ -93,7 +91,7 @@ authRouter.post('/login', async (req, res) => {
     if (loggingUser) {
 
         res.cookie('token', userLoginToken, {
-            maxAge: expTime,
+            maxAge: 60 * 60 * 24 * 5 * 1000,
             httpOnly: true,
             secure: true
         })
