@@ -6,6 +6,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { JWT_SIGN_TOKEN } from "../../../apiconfig";
 import { auth } from 'firebase-admin-config'
+import { log } from "console";
 
 export const authRouter = Router()
 
@@ -13,7 +14,6 @@ authRouter.post('/usersignup', async (req, res) => {
     const userAuthInfo: userSignupType = req.body
 
     const userAuthInfoValidated = userAuthValidator.safeParse(userAuthInfo)
-    console.log(userAuthInfoValidated)
 
     if (!userAuthInfoValidated.success) {
         return res.send({
@@ -65,6 +65,8 @@ authRouter.post('/usersignup', async (req, res) => {
 authRouter.post('/login', async (req, res) => {
     const userLoginToken: string = req.body.token
 
+    log(userLoginToken)
+
     if (!userLoginToken) {
         return res.status(400).send({
             success: false,
@@ -73,13 +75,7 @@ authRouter.post('/login', async (req, res) => {
     }
 
     const userEmail = await auth.verifyIdToken(userLoginToken).then((resp) => {
-        console.log(resp)
         return resp.email
-    })
-
-    const tokenExp = await auth.verifyIdToken(userLoginToken).then((resp) => {
-        console.log(resp)
-        return resp.exp
     })
 
     const loggingUser = await prisma.users.findFirst({
@@ -91,7 +87,7 @@ authRouter.post('/login', async (req, res) => {
     if (loggingUser) {
 
         res.cookie('token', userLoginToken, {
-            maxAge: 60 * 60 * 24 * 5 * 1000,
+            maxAge: 3600000, // 3600000ms = one hour
             httpOnly: true,
             secure: true
         })
@@ -109,7 +105,7 @@ authRouter.post('/login', async (req, res) => {
             })
         }
 
-        const newUser = await prisma.users.create({
+        await prisma.users.create({
             data: {
                 email: userEmail,
                 password: ''
