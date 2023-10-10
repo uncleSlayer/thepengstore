@@ -5,6 +5,8 @@ import { prisma } from "database";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { JWT_SIGN_TOKEN } from "../../../apiconfig";
+import { auth } from 'firebase-admin-config'
+import { log } from "console";
 
 export const authRouter = Router()
 
@@ -12,7 +14,6 @@ authRouter.post('/usersignup', async (req, res) => {
     const userAuthInfo: userSignupType = req.body
 
     const userAuthInfoValidated = userAuthValidator.safeParse(userAuthInfo)
-    console.log(userAuthInfoValidated)
 
     if (!userAuthInfoValidated.success) {
         return res.send({
@@ -62,51 +63,58 @@ authRouter.post('/usersignup', async (req, res) => {
 
 
 authRouter.post('/login', async (req, res) => {
-    const userLoginInfo: userLoginType = req.body
+    const userLoginToken: string = req.body.token
 
-    const userLoginInfoValidated = userLoginValidator.safeParse(userLoginInfo)
+    log(userLoginToken)
 
-    if (!userLoginInfoValidated.success) {
-        return res.send({
-            error: "information supplied is wrong"
+    if (!userLoginToken) {
+        return res.status(400).send({
+            success: false,
+            error: 'incorrect access token'
         })
     }
 
-    const email = userLoginInfo.email
-    const password = userLoginInfo.password
+    const userEmail = await auth.verifyIdToken(userLoginToken).then((resp) => {
+        return resp.email
+    })
 
     const loggingUser = await prisma.users.findFirst({
         where: {
-            email: email
+            email: userEmail
         }
     })
 
     if (loggingUser) {
-        bcrypt.compare(password, loggingUser.password)
-            .then((resp) => {
-                if (resp) {
-                    jwt.sign(loggingUser.email, JWT_SIGN_TOKEN, { algorithm: 'HS256' }, (err, token) => {
-                        if (err) {
-                            return res.send({
-                                error: err
-                            })
-                        }
 
-                        res.cookie('token', token, {
-                            maxAge: 5 * 60 * 1000,
-                            httpOnly: true,
-                            secure: true
-                        })
+        res.cookie('token', userLoginToken, {
+            maxAge: 3600000, // 3600000ms = one hour
+            httpOnly: true,
+            secure: true
+        })
 
-                        res.send({
-                            message: 'user successfully logged in'
-                        })
-                    })
-                }
-            })
+        res.send({
+            message: 'user successfully logged in'
+        })
+
     } else {
+
+        if (!userEmail) {
+            return res.send({
+                success: false,
+                error: 'user email not present in the token'
+            })
+        }
+
+        await prisma.users.create({
+            data: {
+                email: userEmail,
+                password: ''
+            }
+        })
+
         return res.send({
-            error: 'user with this credentials not found'
+            success: false,
+            message: 'new user created'
         })
     }
 })

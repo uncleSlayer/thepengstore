@@ -3,6 +3,7 @@
   "display": "Default",
   "compilerOptions": {
     "composite": false,
+    "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
@@ -16,5 +17,7 @@
     "skipLibCheck": true,
     "strict": true
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

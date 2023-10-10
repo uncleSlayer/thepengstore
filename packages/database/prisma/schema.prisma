@@ -11,12 +11,22 @@ datasource db {
 }
 
 model Products {
-  id          Int    @id @unique @default(autoincrement())
+  id          Int             @id @unique @default(autoincrement())
   name        String
   price       Int
   description String
-  imagesUrl   String
   Cart        Cart[]
+  category    ProductCategory
+  imagesUrl   imagesUrl[]
+}
+
+model imagesUrl {
+  id Int @id @unique @default(autoincrement())
+
+  url String
+
+  product    Products @relation(fields: [productsId], references: [id])
+  productsId Int
 }
 
 model Users {
@@ -34,4 +44,44 @@ model Cart {
 
   product    Products @relation(fields: [productsId], references: [id])
   productsId Int
+
+  quantity Int @default(1)
+}
+
+model Address {
+  id Int @id @unique @default(autoincrement())
+
+  houseNumber String
+  city        String
+  district    String
+  state       String
+  pin         Int
+  Order       Order[]
+}
+
+model Order {
+  id Int @id @unique @default(autoincrement())
+
+  cartId    Int
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int
+
+  orderTime DateTime
+
+  status OrderStatus @default(ORDER_RECEIVED)
+}
+
+enum OrderStatus {
+  DELIVERED
+  ORDER_RECEIVED
+}
+
+enum ProductCategory {
+  CONSTRUCTION
+  INDUSTRIAL
+  FURNITURE
+  GIFTS
+  TELEVISION
+  HEALTH
+  ELECTRICALEQUIPS
 }
