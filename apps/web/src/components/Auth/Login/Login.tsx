@@ -1,6 +1,5 @@
 import { MouseEvent } from 'react'
 import { getAuth, signInWithPopup, googleProvier } from 'firebase-config'
-import { GoogleAuthProvider } from 'firebase/auth'
 import { SERVER_IP } from 'configs'
 import { useNavigate } from 'react-router-dom'
 

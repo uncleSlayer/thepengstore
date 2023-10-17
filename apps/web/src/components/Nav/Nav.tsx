@@ -1,29 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import menu from '../../assets/menu.png'
 import { useNavigate } from 'react-router-dom'
-import { account } from 'appwriteconfig'
-import { Models } from 'appwrite'
 import logo from '../../assets/logo.png'
 import { Link } from 'react-router-dom'
-import { firebaseApp, googleProvier } from 'firebase-config'
-import { getAuth, signInWithPopup } from 'firebase-config'
 
 const App = () => {
 
-    // useEffect(() => {
-    // const data = account.get()
-    // data.then(
-    //     (resp) => {
-    //         setUserData(resp)
-    //     },
-    //     (err) => {
-    //         console.log(err);
-    //     }
-    // )
-    // console.log(userData)
-    // }, [])
-
-    const [userData, setUserData] = useState<Models.User<Models.Preferences>>()
+    // const [userData, setUserData] = useState<Models.User<Models.Preferences>>()
     const navigate = useNavigate()
     const [bottomBarState, setBottomBarState] = useState('block')
     const toggleBottomBarState = () => {
@@ -33,7 +16,6 @@ const App = () => {
             setBottomBarState('none')
         }
     }
-    const auth = getAuth()
 
     return (
         <nav className='fixed top-0 right-0 left-0 bg-blackbg lg:flex lg:flex-row lg:items-center pb-3'>
@@ -55,7 +37,7 @@ const App = () => {
             <div className='px-1' style={{ display: bottomBarState }}>
                 <div className='flex flex-col lg:flex-row items-start lg:items-center'>
                     {
-                        userData ? <button className='px-4 cursor-pointer text-white' onClick={() => navigate('/profile')}>Profile</button> :
+                        true ? <button className='px-4 cursor-pointer text-white' onClick={() => navigate('/profile')}>Profile</button> :
                             <><button type='button' onClick={() => { navigate('/signup') }} className='my-2 text-white bg-skytheme p-2 rounded-lg mx-2 font-sans'>Signup</button>
                                 <button type='button' onClick={() => { navigate('/login') }} className='my-2 text-white bg-skytheme p-2 rounded-lg mx-2 font-sans'>Login</button>
                             </>

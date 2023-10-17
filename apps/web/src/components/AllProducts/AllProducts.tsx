@@ -51,7 +51,7 @@ const AllProducts = () => {
 
     useEffect(() => {
         fetch(
-            'http://localhost:8000/getnextitems',
+            `${SERVER_IP}/getnextitems`,
             {
                 method: 'post',
                 headers: {

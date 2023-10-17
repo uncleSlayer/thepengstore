@@ -2,17 +2,15 @@ import { SERVER_IP } from "configs"
 import { useState } from "react"
 import { cart } from "store"
 import { useRecoilState } from "recoil"
-import { useNavigate } from "react-router-dom"
 
 const Address = () => {
-    const [cartItems, setCartItem] = useRecoilState(cart)
+    const [cartItems] = useRecoilState(cart)
     const [houseno, setHouseNo] = useState('')
     const [city, setCity] = useState('')
     const [district, setDistrict] = useState('')
     const [state, setState] = useState('')
     const [pin, setPin] = useState('')
     const [phone, setPhone] = useState('')
-    const navigate = useNavigate()
 
     const orderButtonHandler = () => {
         fetch(
@@ -23,12 +21,6 @@ const Address = () => {
                 },
                 method: 'post',
                 body: JSON.stringify({
-                    //  houseNumber: string,
-                    // cityAddr: string,
-                    // districtAddr: string,
-                    // stateAddr: string,
-                    // pinAddr: string,
-                    // phone: string
                     orderAddress: {
                         houseNumber: houseno,
                         cityAddr: city,
@@ -70,6 +62,9 @@ const Address = () => {
 
                 <p className="m-1">Zip:</p>
                 <input value={pin} onChange={(e) => setPin(e.target.value)} type="text" className="rounded-lg shadow-lg border border-slate-400 p-1 mb-2" />
+
+                <p className="m-1">Phone:</p>
+                <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" className="rounded-lg shadow-lg border border-slate-400 p-1 mb-2" />
 
             </form>
 

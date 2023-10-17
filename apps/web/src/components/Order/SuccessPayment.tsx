@@ -1,11 +1,10 @@
 import { SERVER_IP } from "configs"
 import { useEffect } from "react"
-import { useParams } from "react-router-dom"
 import { useRecoilState } from "recoil"
 import { cart } from 'store'
 
 const SuccessPayment = () => {
-    const [cartItems, setCartItems] = useRecoilState(cart)
+    const [cartItems] = useRecoilState(cart)
     const params = new URLSearchParams(location.search)
 
     const houseNo = params.get('houseno')

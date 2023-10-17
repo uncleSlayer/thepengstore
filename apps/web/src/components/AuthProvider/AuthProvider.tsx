@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getAuth } from 'firebase-config'
 import { onAuthStateChanged } from 'firebase/auth'
 import { SERVER_IP } from 'configs'
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
+    const [hasLoaded, setHasLoaded] = useState(false)
+
     const auth = getAuth()
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, (user) => {
+            console.log(user)
         })
         return () => unsub()
     }, [])
@@ -30,6 +33,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         return resp.json()
                     })
                     .then((resp) => {
+                        console.log(resp);
+                        setHasLoaded(true)
                         return
                         // console.log(resp)
                     })
@@ -43,6 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [])
 
     return (
-        <>{children}</>
+        hasLoaded ?
+            <>{children}</> : <div>Loading...</div>
     )
 }

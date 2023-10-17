@@ -4,6 +4,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev --concurrency 15",
     "lint": "turbo run lint",
+    "start": "turbo run start",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
@@ -23,7 +24,11 @@
     "@types/multer-s3": "^3.0.0",
     "@types/uuid": "^9.0.3",
     "appwrite": "^13.0.0",
+    "aws-sdk": "^2.1473.0",
+    "esbuild-plugin-html-modules": "^0.7.1",
+    "mock-aws-s3": "^4.0.2",
     "multer-s3": "^3.0.1",
+    "nock": "^13.3.4",
     "react-router-dom": "^6.15.0"
   }
 }

@@ -1,10 +1,10 @@
 import { SERVER_IP } from "configs"
 import { useEffect, useState } from "react"
-import { json, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import plus from '../../assets/plus.png'
 import minus from '../../assets/minus.png'
 import toast, { Toaster } from "react-hot-toast"
-import { RecoilState, useRecoilState } from "recoil"
+import { useRecoilState } from "recoil"
 import { cart } from "store"
 
 const Cart = () => {
@@ -18,6 +18,7 @@ const Cart = () => {
         imagesUrl: string,
         quantity: number
     }[]>()
+    console.log(cartStore);
 
     const fetchAllCartProducts = () => {
         fetch(
@@ -52,9 +53,9 @@ const Cart = () => {
                 {
                     cartInfo?.map((item) => {
                         return (
-                            <div className="rounded-lg m-3 border shadow-lg p-2 flex justify-between" key={item.id} id={`${item.id}`}>
+                            <div className="rounded-lg m-3 border shadow-lg p-2 flex items-center justify-between" key={item.id} id={`${item.id}`}>
                                 <div className="p-2">
-                                    <p>{item.name}</p>
+                                    <p className="font-bold">{item.name}</p>
                                     <p>Price: ₹{item.price}</p>
                                     <p>Quantity: {item.quantity}</p>
                                     <div className="flex gap-3 py-2">
@@ -107,7 +108,7 @@ const Cart = () => {
                                         }} className="w-6" alt="" />
                                     </div>
                                 </div>
-                                <img src={item.imagesUrl} className="w-40 border-gray-400 border shadow-lg rounded-lg" alt="product image" />
+                                <img src={item.imagesUrl} className="w-44 h-32 border-gray-400 border shadow-lg rounded-lg" alt="product image" />
                             </div>
                         )
                     })

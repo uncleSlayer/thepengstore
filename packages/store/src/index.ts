@@ -1,2 +1,2 @@
-export * from "./auth/profileAtom"
-export * from "./products/cart/cartAtom"
+export { profile } from "./auth/profileAtom"
+export { cart } from "./products/cart/cartAtom"

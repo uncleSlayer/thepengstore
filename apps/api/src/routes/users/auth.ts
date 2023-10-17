@@ -6,7 +6,6 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { JWT_SIGN_TOKEN } from "../../../apiconfig";
 import { auth } from 'firebase-admin-config'
-import { log } from "console";
 
 export const authRouter = Router()
 
@@ -65,8 +64,6 @@ authRouter.post('/usersignup', async (req, res) => {
 authRouter.post('/login', async (req, res) => {
     const userLoginToken: string = req.body.token
 
-    log(userLoginToken)
-
     if (!userLoginToken) {
         return res.status(400).send({
             success: false,
@@ -74,13 +71,19 @@ authRouter.post('/login', async (req, res) => {
         })
     }
 
-    const userEmail = await auth.verifyIdToken(userLoginToken).then((resp) => {
-        return resp.email
-    })
+    const userEmail = await auth.verifyIdToken(userLoginToken)
+        .then((resp) => {
+            return resp.email
+        })
+        .catch((err) => {
+            return res.send({
+                error: err
+            })
+        })
 
     const loggingUser = await prisma.users.findFirst({
         where: {
-            email: userEmail
+            email: userEmail?.toString()
         }
     })
 
@@ -107,7 +110,7 @@ authRouter.post('/login', async (req, res) => {
 
         await prisma.users.create({
             data: {
-                email: userEmail,
+                email: userEmail.toString(),
                 password: ''
             }
         })

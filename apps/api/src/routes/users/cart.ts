@@ -82,7 +82,6 @@ cartRouter.get('/cart/getall', async (req, res) => {
     const userToken: string = req.cookies.token
 
     const userTokenDecrypted = await auth.verifyIdToken(userToken)
-    console.log(userToken);
 
     const userEmail = userTokenDecrypted.email
 
@@ -100,9 +99,6 @@ cartRouter.get('/cart/getall', async (req, res) => {
             Cart: true
         }
     })
-
-    console.log(user);
-
 
     if (!user?.Cart) {
         return res.send({
@@ -134,9 +130,6 @@ cartRouter.get('/cart/getall', async (req, res) => {
                 error: 'some weird error that I am not in a mood to fix now'
             })
         }
-
-        console.log(product);
-
 
         if (!product.id || !product?.name || !product?.price || !product?.description || !product?.imagesUrl) {
             return res.send({

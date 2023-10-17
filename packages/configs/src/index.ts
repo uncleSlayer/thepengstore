@@ -1,1 +1,1 @@
-export * from "./web/config"
+export { SERVER_IP } from "./web/config"
