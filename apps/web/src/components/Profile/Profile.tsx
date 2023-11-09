@@ -1,5 +1,3 @@
-import BottomNav from "../BottomNav/BottomNav"
-
 const Profile = () => {
 
     return (
@@ -8,7 +6,6 @@ const Profile = () => {
                 Profile
             </p>
             <button className="border p-2">Logout</button>
-            <BottomNav />
         </div>
     )
 }

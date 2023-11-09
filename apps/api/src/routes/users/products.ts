@@ -10,44 +10,53 @@ export const userProductRouter = Router()
 
 // get individual item from database
 userProductRouter.get('/getinditem/:id', async (req, res) => {
-    const productId = Number(req.params.id)
-    const productIdValidated = productGetIndValidator.safeParse(productId)
-
     try {
-        console.log(req.cookies)
-    } catch (error) {
-        console.log(error);
 
-    }
+        const productId = Number(req.params.id)
+        const productIdValidated = productGetIndValidator.safeParse(productId)
 
-    if (!productIdValidated) {
-        return res.send({
-            error: "id is not sent"
-        })
-    }
+        try {
+            console.log(req.cookies)
+        } catch (error) {
+            console.log(error);
 
-    const productInfo = await prisma.products.findFirst({
-        where: {
-            id: productId
-        },
-
-        include: {
-            imagesUrl: true
         }
-    })
 
-    if (!productInfo) {
+        if (!productIdValidated) {
+            return res.send({
+                error: "id is not sent"
+            })
+        }
+
+        const productInfo = await prisma.products.findFirst({
+            where: {
+                id: productId
+            },
+
+            include: {
+                imagesUrl: true
+            }
+        })
+
+        if (!productInfo) {
+            return res.send({
+                error: "data for this id doesn't exist in the database"
+            })
+        }
+
+        console.log(productInfo);
+
+
+        res.send({
+            data: productInfo
+        })
+
+    } catch (error) {
         return res.send({
-            error: "data for this id doesn't exist in the database"
+            success: false,
+            error: error
         })
     }
-
-    console.log(productInfo);
-
-
-    res.send({
-        data: productInfo
-    })
 })
 
 

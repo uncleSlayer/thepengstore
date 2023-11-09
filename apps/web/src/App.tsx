@@ -15,7 +15,7 @@ const App = () => {
   }
 
   return (
-    <nav className='fixed top-2 right-2 left-2 bg-slate-200 shadow-sm lg:flex lg:flex-row lg:items-center pb-3 rounded-lg'>
+    <nav className='fixed top-2 right-2 left-2 bg-black shadow-sm lg:flex lg:flex-row lg:items-center pb-3 rounded-lg'>
       <div className='flex items-center w-full justify-between p-5'>
         <div className="logo">
           <img src={logo} alt="" />

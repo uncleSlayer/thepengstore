@@ -79,86 +79,88 @@ cartRouter.post('/cart/add/:id', async (req, res) => {
 
 cartRouter.get('/cart/getall', async (req, res) => {
 
-    const userToken: string = req.cookies.token
+    try {
+        const userToken: string = req.cookies.token
 
-    const userTokenDecrypted = await auth.verifyIdToken(userToken)
-    console.log(userToken);
+        const userTokenDecrypted = await auth.verifyIdToken(userToken)
+        console.log(userToken);
 
-    const userEmail = userTokenDecrypted.email
+        const userEmail = userTokenDecrypted.email
 
-    if (!userToken) {
-        return res.send({
-            error: 'jwt token not found'
-        })
-    }
-
-    const user = await prisma.users.findFirst({
-        where: {
-            email: userEmail
-        },
-        include: {
-            Cart: true
+        if (!userToken) {
+            return res.send({
+                error: 'jwt token not found'
+            })
         }
-    })
 
-    console.log(user);
-
-
-    if (!user?.Cart) {
-        return res.send({
-            error: 'user does not have any cart items'
-        })
-    }
-
-    const products: {
-        id: number;
-        name: string;
-        price: number;
-        description: string;
-        imagesUrl: string;
-    }[] = []
-
-    for (let i = 0; i < user.Cart.length; i++) {
-
-        const product = await prisma.products.findFirst({
+        const user = await prisma.users.findFirst({
             where: {
-                id: user.Cart[i].productsId
+                email: userEmail
             },
             include: {
-                imagesUrl: true,
+                Cart: true
             }
         })
 
-        if (!product) {
+        if (!user?.Cart) {
             return res.send({
-                error: 'some weird error that I am not in a mood to fix now'
+                error: 'user does not have any cart items'
             })
         }
 
-        console.log(product);
+        const products: {
+            id: number;
+            name: string;
+            price: number;
+            description: string;
+            imagesUrl: string;
+        }[] = []
 
+        for (let i = 0; i < user.Cart.length; i++) {
 
-        if (!product.id || !product?.name || !product?.price || !product?.description || !product?.imagesUrl) {
-            return res.send({
-                error: 'will solve this when I see the bug bye'
+            const product = await prisma.products.findFirst({
+                where: {
+                    id: user.Cart[i].productsId
+                },
+                include: {
+                    imagesUrl: true,
+                }
             })
+
+            if (!product) {
+                return res.send({
+                    error: 'some weird error that I am not in a mood to fix now'
+                })
+            }
+
+            if (!product.id || !product?.name || !product?.price || !product?.description || !product?.imagesUrl) {
+                return res.send({
+                    error: 'will solve this when I see the bug bye'
+                })
+            }
+
+            const pushItem = {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                description: product.description,
+                imagesUrl: product.imagesUrl[0].url,
+                quantity: user.Cart[i].quantity
+            }
+
+            products.push(pushItem)
         }
 
-        const pushItem = {
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            description: product.description,
-            imagesUrl: product.imagesUrl[0].url,
-            quantity: user.Cart[i].quantity
-        }
-
-        products.push(pushItem)
+        return res.send({
+            message: products
+        })
+    } catch (error) {
+        return res.send({
+            success: false,
+            message: error
+        })
     }
 
-    return res.send({
-        message: products
-    })
 })
 
 cartRouter.post('/cart/remove-one/:id', async (req, res) => {
@@ -200,19 +202,37 @@ cartRouter.post('/cart/remove-one/:id', async (req, res) => {
     }
 
     try {
-        await prisma.cart.update({
-            where: {
-                id: cartToUpdate.id
-            },
 
-            data: {
-                quantity: cartToUpdate.quantity - 1
-            }
-        })
-        return res.send({
-            success: true,
-            message: 'cart item removed'
-        })
+        if (cartToUpdate.quantity > 1) {
+            await prisma.cart.update({
+                where: {
+                    id: cartToUpdate.id
+                },
+
+                data: {
+                    quantity: cartToUpdate.quantity - 1
+                }
+            })
+
+            return res.send({
+                success: true,
+                message: 'cart item removed'
+            })
+        } else {
+
+            await prisma.cart.delete({
+                where: {
+                    id: cartToUpdate.id
+                }
+            })
+
+            return res.send({
+                success: false,
+                message: 'this item does not exist in the cart'
+            })
+        }
+
+
     } catch (error) {
         return res.send({
             success: false,

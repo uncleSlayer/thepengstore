@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { userSignupType } from 'type-checks'
-import { account } from 'appwriteconfig'
+// import { account } from 'appwriteconfig'
 import { MouseEvent } from 'react'
 import { v4 as uuid } from 'uuid'
 import { useNavigate } from 'react-router-dom'
@@ -18,41 +18,41 @@ const Signup = () => {
     const handleSignupBtn = async (e: MouseEvent) => {
         e.preventDefault()
 
-        if (password !== repassword) {
-            toast(`password doesn't match`)
-            return
-        }
+        // if (password !== repassword) {
+        //     toast(`password doesn't match`)
+        //     return
+        // }
 
-        account.create(
-            uuid(),
-            email,
-            password
-        )
-            .then(
-                () => {
-                    const userData: userSignupType = {
-                        email: email,
-                        password: password,
-                        rePassword: repassword
-                    }
+        // account.create(
+        //     uuid(),
+        //     email,
+        //     password
+        // )
+            // .then(
+            //     () => {
+            //         const userData: userSignupType = {
+            //             email: email,
+            //             password: password,
+            //             rePassword: repassword
+            //         }
 
-                    fetch(
-                        `${SERVER_IP}/usersignup`,
-                        {
-                            headers: {
-                                'Content-type': 'Application/json'
-                            },
-                            method: 'post',
-                            body: JSON.stringify(userData)
-                        }
-                    )
+            //         fetch(
+            //             `${SERVER_IP}/usersignup`,
+            //             {
+            //                 headers: {
+            //                     'Content-type': 'Application/json'
+            //                 },
+            //                 method: 'post',
+            //                 body: JSON.stringify(userData)
+            //             }
+            //         )
 
-                    navigate('/login')
-                },
-                (err) => {
-                    console.log(err);
-                }
-            )
+            //         navigate('/login')
+            //     },
+            //     (err) => {
+            //         console.log(err);
+            //     }
+            // )
     }
 
     return (

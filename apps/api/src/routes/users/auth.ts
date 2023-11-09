@@ -1,12 +1,11 @@
 import { Router } from "express";
 import { userAuthValidator, userLoginValidator } from "zod-checks";
-import { userLoginType, userSignupType } from "type-checks";
+import { userSignupType } from "type-checks";
 import { prisma } from "database";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { JWT_SIGN_TOKEN } from "../../../apiconfig";
 import { auth } from 'firebase-admin-config'
-import { log } from "console";
 
 export const authRouter = Router()
 
@@ -63,58 +62,65 @@ authRouter.post('/usersignup', async (req, res) => {
 
 
 authRouter.post('/login', async (req, res) => {
-    const userLoginToken: string = req.body.token
+    try {
+        {
+            const userLoginToken: string = req.body.token
 
-    log(userLoginToken)
-
-    if (!userLoginToken) {
-        return res.status(400).send({
-            success: false,
-            error: 'incorrect access token'
-        })
-    }
-
-    const userEmail = await auth.verifyIdToken(userLoginToken).then((resp) => {
-        return resp.email
-    })
-
-    const loggingUser = await prisma.users.findFirst({
-        where: {
-            email: userEmail
-        }
-    })
-
-    if (loggingUser) {
-
-        res.cookie('token', userLoginToken, {
-            maxAge: 3600000, // 3600000ms = one hour
-            httpOnly: true,
-            secure: true
-        })
-
-        res.send({
-            message: 'user successfully logged in'
-        })
-
-    } else {
-
-        if (!userEmail) {
-            return res.send({
-                success: false,
-                error: 'user email not present in the token'
-            })
-        }
-
-        await prisma.users.create({
-            data: {
-                email: userEmail,
-                password: ''
+            if (!userLoginToken) {
+                return res.status(400).send({
+                    success: false,
+                    error: 'incorrect access token'
+                })
             }
-        })
 
+            const userEmail = await auth.verifyIdToken(userLoginToken).then((resp) => {
+                return resp.email
+            })
+
+            const loggingUser = await prisma.users.findFirst({
+                where: {
+                    email: userEmail
+                }
+            })
+
+            if (loggingUser) {
+
+                res.cookie('token', userLoginToken, {
+                    maxAge: 3600000, // 3600000ms = one hour
+                    httpOnly: true,
+                    secure: true
+                })
+
+                res.send({
+                    message: 'user successfully logged in'
+                })
+
+            } else {
+
+                if (!userEmail) {
+                    return res.send({
+                        success: false,
+                        error: 'user email not present in the token'
+                    })
+                }
+
+                await prisma.users.create({
+                    data: {
+                        email: userEmail,
+                        password: ''
+                    }
+                })
+
+                return res.send({
+                    success: false,
+                    message: 'new user created'
+                })
+            }
+        }
+    } catch (error) {
         return res.send({
             success: false,
-            message: 'new user created'
+            message: error
         })
     }
 })

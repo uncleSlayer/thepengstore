@@ -1,7 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom"
-import BottomNav from "../BottomNav/BottomNav"
 import { useEffect, useState } from "react"
-import { SERVER_IP } from "configs"
 
 const AllProducts = () => {
     const [products, setProducts] = useState<any>([{
@@ -73,11 +71,11 @@ const AllProducts = () => {
 
     return (
         <div className="mt-20 px-2 p-2">
-            <div className="grid grid-cols-2 pb-24">
+            <div className="grid grid-cols-2 lg:grid-cols-3 pb-24 maxwt md:w-[50%]">
                 {
                     products.map((item: any) => {
                         return (
-                            <div key={item.id} onClick={() => navigate(`/product/${item.id}`)} className="p-2 border rounded-lg shadow-lg m-2 brder-[1px] border-slate-300">
+                            <div key={item.id} onClick={() => navigate(`/product/${item.id}`)} className="bg-white p-2 border rounded-lg shadow-lg m-2 brder-[1px] border-slate-300">
                                 <div className="product-container flex flex-col items-center">
                                     <img src={item.imagesUrl[0].url} className="w-48 h-[6.3rem] rounded-lg shadow-lg" alt="" />
                                     <p>{item.name}</p>
@@ -89,8 +87,6 @@ const AllProducts = () => {
                     })
                 }
             </div>
-
-            <BottomNav />
         </div>
     )
 }
