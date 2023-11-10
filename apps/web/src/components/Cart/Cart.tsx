@@ -1,15 +1,15 @@
 import { SERVER_IP } from "configs"
 import { useEffect, useState } from "react"
-import { json, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import plus from '../../assets/plus.png'
 import minus from '../../assets/minus.png'
 import toast, { Toaster } from "react-hot-toast"
-import { RecoilState, useRecoilState } from "recoil"
+import { useRecoilState } from "recoil"
 import { cart } from "store"
 
 const Cart = () => {
     const navigate = useNavigate()
-    const [cartStore, setCartStore] = useRecoilState(cart)
+    const [ setCartStore] = useRecoilState(cart)
     const [cartInfo, setCartInfo] = useState<{
         id: number,
         name: string,

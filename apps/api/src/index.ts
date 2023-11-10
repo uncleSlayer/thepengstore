@@ -27,6 +27,9 @@ app.use(authRouter)
 app.use(cartRouter)
 app.use(checkoutRouter)
 
-app.listen(PORT, () => console.log(`express server is listening on port: ${PORT}`))
+app.listen(PORT, async () => {
+    console.log('express app started');
+    
+})
 
 export default app;

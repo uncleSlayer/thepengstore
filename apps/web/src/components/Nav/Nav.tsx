@@ -9,7 +9,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 
 const App = () => {
     const auth = getAuth()
-    const [user, loading, error] = useAuthState(auth)
+    const [user] = useAuthState(auth)
     const navigate = useNavigate()
     const [bottomBarState, setBottomBarState] = useState('block')
     const toggleBottomBarState = () => {

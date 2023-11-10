@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { productUploadValidator } from "zod-checks";
-import { prisma } from "database"
+import { prisma } from '../../../prisma/index'
 import { fileUpload } from 'storage'
 
 export const adminProductRouter = Router()

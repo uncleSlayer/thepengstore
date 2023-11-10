@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { productGetIndValidator } from "zod-checks";
 import { productLastItemIdValidator } from "zod-checks";
-import { prisma } from "database";
+import { prisma } from '../../../prisma/index'
 import { allProductsLastItemType } from "type-checks";
 
 

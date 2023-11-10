@@ -2,8 +2,8 @@ import { Router } from "express";
 import Stripe from "stripe"
 import { orderItemsValidator, productLastItemIdValidator, orderDataCreationValidator, orderAddressValidator } from "zod-checks"
 import { orderItemsType, orderDataCreationType } from "type-checks"
-import { prisma } from "database"
 import { SERVER_IP } from 'configs';
+import { prisma } from '../../../prisma/index'
 
 const stripeClient = new Stripe('sk_test_51NhlPWSB6Lpj0maTGM7KVCxGYvu1keFaqL8UlTOnfSFrF5y7rndcaq1ORrEbsONsnodz4oihvWDp2RIwMlS1xPog00lgKyRJo7', {
     apiVersion: '2023-08-16'

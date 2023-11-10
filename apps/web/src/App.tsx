@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import menu from './assets/menu.png'
-// import { Account, ID, client } from 'appwriteconfig'
 import logo from "../src/assets/logo.png"
 
 const App = () => {

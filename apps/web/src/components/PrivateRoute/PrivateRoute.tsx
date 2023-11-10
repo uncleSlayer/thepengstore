@@ -5,7 +5,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 const PrivateRoute: React.FC = () => {
     const auth = getAuth()
-    const [user, loading, error] = useAuthState(auth)
+    const [user, loading ] = useAuthState(auth)
 
     if (loading) {
         return <div className='mt-24'>Loading</div>

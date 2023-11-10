@@ -3,6 +3,7 @@
   "globalDependencies": [
     "**/.env.*local"
   ],
+  "globalDotEnv": [".env"],
   "pipeline": {
     "build": {
       "dependsOn": [
@@ -17,6 +18,9 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "start": {
+      
     }
   }
 }

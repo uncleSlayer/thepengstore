@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { prisma } from "database";
+import { prisma } from '../../../prisma/index'
 import { addToCartType } from "type-checks";
 import { auth } from 'firebase-admin-config'
 

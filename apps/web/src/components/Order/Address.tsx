@@ -2,17 +2,15 @@ import { SERVER_IP } from "configs"
 import { useState } from "react"
 import { cart } from "store"
 import { useRecoilState } from "recoil"
-import { useNavigate } from "react-router-dom"
 
 const Address = () => {
-    const [cartItems, setCartItem] = useRecoilState(cart)
+    const [cartItems] = useRecoilState(cart)
     const [houseno, setHouseNo] = useState('')
     const [city, setCity] = useState('')
     const [district, setDistrict] = useState('')
     const [state, setState] = useState('')
     const [pin, setPin] = useState('')
-    const [phone, setPhone] = useState('')
-    const navigate = useNavigate()
+    const [phone] = useState('')
 
     const orderButtonHandler = () => {
         fetch(

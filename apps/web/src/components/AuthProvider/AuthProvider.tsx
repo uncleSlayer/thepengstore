@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const auth = getAuth()
     useEffect(() => {
-        const unsub = onAuthStateChanged(auth, (user) => {
+        const unsub = onAuthStateChanged(auth, () => {
         })
         return () => unsub()
     }, [])
@@ -29,9 +29,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     .then((resp) => {
                         return resp.json()
                     })
-                    .then((resp) => {
+                    .then(() => {
                         return
-                        // console.log(resp)
                     })
                     .catch((err: Error) => {
                         console.log(err.message);

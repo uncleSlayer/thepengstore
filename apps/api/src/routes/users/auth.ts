@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { userAuthValidator, userLoginValidator } from "zod-checks";
 import { userSignupType } from "type-checks";
-import { prisma } from "database";
+import { prisma } from '../../../prisma/index'
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { JWT_SIGN_TOKEN } from "../../../apiconfig";
